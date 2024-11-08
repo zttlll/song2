@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>多标记点示例</title>
+    <style>
+        html, 
+        body,
+         #container {
+            height: 100%;
+            width: 100%;
+        }
+     </style>
+      </script>
+      <script src="https://webapi.amap.com/maps?v=1.4.15&key=a330c41f06c7bcf955aaa982c08ebe9a&plugin=AMap.PolygonEditor,AMap.Riding"></script> 
+</style>
+//
+//
+<!-- 2. 添加高德API资源 -->
+ <!-- <script type="text/javascript">
+   window._AMapSecurityConfig = {
+     securityJsCode: "639686ef33918e7cc6ec33007a6dbc24",
+   };
+ </script>
+ <script src="https://webapi.amap.com/maps?v=2.0&key=a330c41f06c7bcf955aaa982c08ebe9a"></script> -->
+
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+  console.log(AMap)
+</script> 
+
+<script type="text/javascript">
+    // 初始化地图
+    const map = new AMap.Map('container',{
+            center: [102.752462,25.057836],            
+            zoom: 10.0,
+            mapStyle: "amap://styles/fresh",
+            resizeEnable: true
+    });
+
+
+//
+    var text = new AMap.Text({
+        text:'点击标记点查看具体信息',
+        anchor:'center', // 设置文本标记锚点
+        draggable:true,
+        cursor:'pointer',
+        angle:10,
+        style:{
+            //'padding': '.75rem 1.25rem',
+            'margin-bottom': '20rem',
+            'border-radius': '0rem',
+            'background-color': 'white',
+            'width': '20rem',
+            'border-width': 0,
+            //'box-shadow': '0 2px 6px 0 rgba(114, 124, 245, .5)',
+            'text-align': 'center',
+            'font-size': '20px',
+            'color': 'blue'
+        },
+        position: [102.75555,25.055259]
+    });
+
+    text.setMap(map);
+
+
+//
+var polygons = [
+        [[102.759565,25.058117],
+         [102.759587,25.057358],
+          [102.759391,25.056849],
+           [102.761008,25.057106], 
+           [102.760489,25.058097]], // 第一个多边形
+
+        [[102.761861,25.063827],
+         [102.761258,25.063345],
+          [102.761635,25.062015], 
+          [102.762791,25.062288], 
+          [102.762269,25.06351], 
+          [102.762334,25.063666]] ,//
+
+          [[102.761023,25.063066],
+         [102.760892,25.062905],
+          [102.759953,25.062693], 
+          [102.759884,25.062477], 
+          [102.759639,25.062201], 
+          [102.759728,25.062148], 
+          [102.759897,25.061946], 
+          [102.761214,25.062277],
+          [102.761214,25.062277]
+        ] ,//
+
+        //   [[102.80815,24.96701],
+        //  [102.903315,24.97393],
+        //   [102.799499,24.92179], 
+        //   [102.909422,24.95686], 
+        //   [102.87329,25.005757]]  
+    ];
+
+    // 遍历polygon数组，为每一个多边形创建一个AMap.Polygon对象并添加到地图上
+    for (var i = 0; i < polygons.length; i++) {
+        var polygon = new AMap.Polygon({
+            path: polygons[i],
+            strokeColor: "#FF33FF",
+            strokeWeight: 6,
+            strokeOpacity: 0.2,
+            fillOpacity: 0.4,
+            fillColor: '#1791fc',
+            zIndex: 50,
+            bubble: true
+        });
+        polygon.setMap(map);
+    }
+
+
+
+// 添加缩放控件
+AMap.plugin(['AMap.ToolBar','AMap.Scale','AMap.ControlBar','AMap.Geolocation','AMap.HawkEye'],function(){ 
+  var toolbar = new AMap.ToolBar({
+    position:{
+        right:'30px',
+        top:'10px'
+    }
+  }); //缩放工具条实例化
+  
+  var scale=new AMap.Scale({
+    position:{
+        right:'0px',
+        top:'0px'
+    }
+  });
+  var ControlBar=new  AMap.ControlBar();
+  var Geolocation=new AMap.Geolocation();
+  var Geolocation=new AMap.HawkEye();
+  map.addControl(toolbar); //添加控件
+  map.addControl(scale);
+  map.addControl(ControlBar);
+  map.addControl(Geolocation);
+  map.addControl(HawkEye);
+});
+//
+
+//
+    // 定义标记点数据
+    var markersData = [
+        {
+            position: [102.752462,25.057836],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学主校门</h3>" +
+                      "<p>该校门是整个学校的主要入口，一般新生会从这里进入校园</p>" +
+                      "<img src='http://www.help315.com.cn/uploads/allimg/190903/27-1ZZ3151A8.jpg'  style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.755158,25.057307],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>智华楼</h3>" +
+                      "<p>这栋楼从去年开始投入使用，其中一至三楼提供给学生自习，大概能容纳1400人左右</p>" +
+                    //   "<img src='https://example.com/path/to/imageB.jpg' alt='地点B的图片' style='max-width:100%;height:auto;'>" +
+                    //这栋楼网上没图
+                      "</div>"
+        },
+        {
+            position: [102.755843,25.057244],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>至信楼（原第三教学楼）</h3>" +
+                      "<p>该教学楼是学校内最新的一栋，无论是教学设备，还是装修程度。并且容纳人数为4400人左右</p>" +
+                      "<img src='https://p.jobui.com/edu/TBlM37mncHnhndiACFPlqaFa6PLLdwQHDVLdvRV1ioQ=.png'  style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.757325,25.057114],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>第二图书馆</h3>" +
+                      "<p>该图书馆不仅仅是一座图书馆，其中还包含了世界茶叶博物馆，校史馆以及其他建筑物</p>" +
+                      "<img src='https://img1.youzy.cn/content/media/thumbs/pm00045263_800.jpeg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.75882,25.057257],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>云南大学附属中学（原西南林业大学第四教学楼，现出售给其他学校）</h3>" +
+                      "<p>这栋教学楼的一般区域原来是西南林业大学使用，容纳人数为4200人左右</p>" +
+                      //"<img src='https://example.com/path/to/imageC.jpg' alt='地点C的图片' style='max-width:100%;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.758733,25.060338],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>至真楼</h3>" +
+                      "<p>该教学楼原名为第一教学楼，并且是西南林业大学使用年份和历史最老的一栋楼，该教学楼的容纳人数为6300人左右</p>" +
+                      "<img src='https://img1.youzy.cn/content/media/thumbs/p00045275.jpeg'  style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.756982,25.061449],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>至善楼</h3>" +
+                      "<p>该教学楼原名为第二教学楼，是学校内规模最小的一栋用于教学的楼，容纳人数为4000人左右</p>" +
+                      //"<img src='https://example.com/path/to/imageC.jpg' alt='地点C的图片' style='max-width:100%;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.756914,25.062402],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学林学楼</h3>" +
+                      "<p>这栋教学楼是学校内属于学院最大的一栋楼，由林学院使用，容纳人数为6000人左右</p>" +
+                      "<img src='https://p.jobui.com/edu/TBlM37mncHnhndiACFPlqQxxK52DGeSuw5/OzxxnRW8=.png' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        //
+        {
+            position: [102.758083,25.062643],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学竹苑餐厅</h3>" +
+                      "<p>这一餐厅原名为第二食堂，一共有四层，餐厅特色有黄焖鸡，砂锅等一系列菜品，还有特色自选菜品。</p>" +
+                      //"<img src='https://p.jobui.com/edu/TBlM37mncHnhndiACFPlqQxxK52DGeSuw5/OzxxnRW8=.png' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.759042,25.061781],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>松苑餐厅</h3>" +
+                      "<p>这一餐厅原名为第一食堂，只有一层，但占地面积大，能容纳足够多的人</p>" +
+                     // "<img src='https://p.jobui.com/edu/TBlM37mncHnhndiACFPlqQxxK52DGeSuw5/OzxxnRW8=.png' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.762322,25.061704],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学体育馆</h3>" +
+                      "<p>这栋体育馆是由游泳馆，羽毛球馆，体育学院，篮球馆组成，其中一些馆会收取一定的费用。</p>" +
+                     "<img src='https://www.hf960.com/upload/2015-06/1506171042212615.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.761604,25.05865],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学第四食堂（原四食堂已拆除）</h3>" +
+                      "<p>这一食堂是学校内最新的一座食堂，共有三层，其中还安装了自动扶梯，里面的菜品也很丰富，甚至还有火锅，烧烤，海底捞等一系列店铺，除了吃饭外，三楼还有很多空位提供给学生自习</p>" +
+                      //"<img src='https://p.jobui.com/edu/TBlM37mncHnhndiACFPlqQxxK52DGeSuw5/OzxxnRW8=.png' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        //
+        {
+            position: [102.752594,25.056129],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学樟苑餐厅</h3>" +
+                      "<p>这一餐厅还包括了清真第二餐厅由于位置偏僻，一般只有餐厅周围的学生前往就餐</p>" +
+                    // "<img src='https://www.hf960.com/upload/2015-06/1506171042212615.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.760416,25.062377],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学篮球场</h3>" +
+                      "<p>这片球场有篮球场和排球场组成，球场周围林木众多，环境优美，是适合打球的地方</p>" +
+                     //"<img src='https://www.hf960.com/upload/2015-06/1506171042212615.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.761924,25.062827],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学田径场</h3>" +
+                      "<p>这片场地的足球场今年翻新过一遍，喜欢跑步和踢球的学生应该会很喜欢这里。</p>" +
+                    // "<img src='https://www.hf960.com/upload/2015-06/1506171042212615.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.760082,25.057346],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>秋海</h3>" +
+                      "<p>学校内的一片小湖泊，周围铺满了草地，湖里还养了很多金鱼，乌龟，以及几只天鹅，休闲的时候可以在湖边喂鱼和晒太阳。</p>" +
+                    "<img src='https://pic.baike.soso.com/p/20131107/20131107100054-268250847.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.754626,25.056783],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>土木工程学院</h3>" +
+                      "<p>土木工程学院这栋建筑物高四层，容纳人数为1400左右，学院内开设有测绘工程，森林工程，给排水等专业。</p>" +
+                    // "<img src='https://www.hf960.com/upload/2015-06/1506171042212615.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.756457,25.058004],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>茶苑餐厅</h3>" +
+                      "<p>该餐厅以前是只开设给教师使用，但现在学生也可进入就餐</p>" +
+                    // "<img src='https://www.hf960.com/upload/2015-06/1506171042212615.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+        {
+            position: [102.757925,25.061474],
+            content: "<div style='width:200px;text-align:center;padding:10px;'>" +
+                      "<h3>西南林业大学北图书馆</h3>" +
+                      "<p>该图书馆还包括了报告厅，数字化营业中心等，其中提供给学生自习的区域有一至四层，每一层都配备了很多自习有关的设施。</p>" +
+                     "<img src='https://pic.baike.soso.com/p/20131107/20131107100155-933998985.jpg' style='width:150px;height:auto;'>" +
+                      "</div>"
+        },
+
+    ];
+
+markersData.forEach(function(item) {
+        var marker = new AMap.Marker({
+            position: item.position,
+            title: item.title
+        });
+
+        // 添加点击事件以显示信息窗口
+        marker.on('click', function() {
+            var infoWindow = new AMap.InfoWindow({
+                content: item.content,
+                offset: new AMap.Pixel(0, -30)
+            });
+            infoWindow.open(map, marker.getPosition());
+        });
+
+        // 将标记点添加到地图上
+     map.add(marker);
+    });
+
+    var path = [
+    [102.757372,25.058385],
+      [102.757029,25.058678],
+      [102.756474,25.059729], 
+      [102.755653,25.060454],
+      [102.755104,25.061134],
+      [102.754902,25.061672],
+      [102.755082,25.062312],
+      [102.75525,25.062637],
+      [102.755497,25.063023],
+      [102.756461,25.063612],
+      [102.756976,25.063713],
+      [102.757985,25.063094],
+      [102.758187,25.062931],
+      [102.758658,25.062616],
+      [102.759005,25.062454], 
+      [102.759542,25.062444],
+      [102.759677,25.062891],
+      [102.76073,25.063195],  
+      [102.760798,25.063216],
+      [102.761489,25.063901],
+      [102.762246,25.064633],  
+      [102.762569,25.064816],
+      [102.762932,25.064514],
+      [102.763573,25.063504],  
+      [102.763775,25.06301],
+      [102.763856,25.0629],
+      [102.764027,25.062321],  
+      [102.764128,25.061763],
+      [102.764128,25.061763],
+      [102.764058,25.061274],  
+      [102.764038,25.061009],
+      [102.763968,25.060186],  
+      [102.764159,25.059034],
+      [102.76445,25.058344],
+      [102.764902,25.057606],  
+      [102.765202,25.057021],
+      [102.763457,25.055877],
+      [102.763052,25.055646],
+      [102.761807,25.055301],
+      [102.760103,25.055795],
+      [102.759158,25.055729],
+      [102.757023,25.055795],
+      [102.755323,25.056396],
+      [102.753806,25.05656],
+      [102.753449,25.056206],
+      [102.75334,25.055679],
+      [102.751577,25.055992],
+      [102.75155,25.055918],
+      [102.751168,25.057515],
+      [102.752331,25.057696],
+      [102.753095,25.058495],
+      [102.757266,25.058231],
+    ];
+    var polygon1 = new AMap.Polygon({
+        map: map,
+        fillColor: "#ccebc5", //多边形填充颜色
+        fillOpacity:0.4,
+        path: path
+    });
+    // 计算区域面积
+    var area = Math.round(AMap.GeometryUtil.ringArea(path));
+    var text = new AMap.Text({
+        position: new AMap.LngLat(102.754421,25.058877),
+        text: '学校区域面积' + area + '平方米',
+        offset: new AMap.Pixel(-20, -20)
+    })
+    map.add(text);
+    map.setFitView();
+
+
+
+
+// const pathArr = [
+//   [
+//     [
+//       [102.757372,25.058385],
+//       [102.757029,25.058678],
+//       [102.756474,25.059729], 
+//       [102.755653,25.060454],
+//       [102.755104,25.061134],
+//       [102.754902,25.061672],
+//       [102.755082,25.062312],
+//       [102.75525,25.062637],
+//       [102.755497,25.063023],
+//       [102.756461,25.063612],
+//       [102.756976,25.063713],
+//       [102.757985,25.063094],
+//       [102.758187,25.062931],
+//       [102.758658,25.062616],
+//       [102.759005,25.062454], 
+//       [102.759542,25.062444],
+//       [102.759677,25.062891],
+//       [102.76073,25.063195],  
+//       [102.760798,25.063216],
+//       [102.761489,25.063901],
+//       [102.762246,25.064633],  
+//       [102.762569,25.064816],
+//       [102.762932,25.064514],
+//       [102.763573,25.063504],  
+//       [102.763775,25.06301],
+//       [102.763856,25.0629],
+//       [102.764027,25.062321],  
+//       [102.764128,25.061763],
+//       [102.764128,25.061763],
+//       [102.764058,25.061274],  
+//       [102.764038,25.061009],
+//       [102.763968,25.060186],  
+//       [102.764159,25.059034],
+//       [102.76445,25.058344],
+//       [102.764902,25.057606],  
+//       [102.765202,25.057021],
+//       [102.763457,25.055877],
+//       [102.763052,25.055646],
+//       [102.761807,25.055301],
+//       [102.760103,25.055795],
+//       [102.759158,25.055729],
+//       [102.757023,25.055795],
+//       [102.755323,25.056396],
+//       [102.753806,25.05656],
+//       [102.753449,25.056206],
+//       [102.75334,25.055679],
+//       [102.751577,25.055992],
+//       [102.75155,25.055918],
+//       [102.751168,25.057515],
+//       [102.752331,25.057696],
+//       [102.753095,25.058495],
+//       [102.757266,25.058231],
+         
+//     ],
+//   ],
+// ];
+
+
+// const polygon= new AMap.Polygon({
+//  path: pathArr, //多边形路径
+//   fillColor: "#ccebc5", //多边形填充颜色
+//   strokeOpacity: 1, //线条透明度
+//   fillOpacity: 0.25, //填充透明度
+//   strokeColor: "#2b8cbe", //线条颜色
+//   strokeWeight: 2, //线条宽度
+//   strokeStyle: "dashed", //线样式
+//   strokeDasharray: [5, 5], //轮廓的虚线和间隙的样式
+// });
+
+// map.add(polygon);
+
+
+
+// var center = new AMap.LngLat(116.409405,39.911309);
+// //设置圆的半径大小
+// var radius = 5000;
+// var circle = new AMap.Circle({
+//   center: center, //圆心
+//   radius: radius, //半径
+//   borderWeight: 3, //描边的宽度
+//   strokeColor: "#FF33FF", //轮廓线颜色
+//   strokeOpacity: 1, //轮廓线透明度
+//   strokeWeight: 6, //轮廓线宽度
+//   fillOpacity: 0.4, //圆形填充透明度
+//   strokeStyle: "dashed", //轮廓线样式
+//   strokeDasharray: [10, 10],
+//   fillColor: "#1791fc", //圆形填充颜色
+//   zIndex: 50, //圆形的叠加顺序
+// });
+
+
+
+// //圆形 Circle 对象添加到 Map
+// map.add(circle);
+// //根据覆盖物范围调整视野
+// map.setFitView([ circle ])
+// var center = new AMap.LngLat(102.76014,25.057359); //设置椭圆圆心位置
+// var radius = [40, 40]; //设置椭圆的半径大小，单位：米，2000代表横轴半径，1000代表纵轴半径
+// //椭圆形 Ellipse 实例
+// var ellipse = new AMap.Ellipse({
+//   center: center, //椭圆圆心位置
+//   radius: radius, //椭圆的半径大小
+//   strokeColor: "#FF33FF", //轮廓线颜色
+//   strokeWeight: 6, //轮廓线宽度
+//   strokeOpacity: 0.2, //轮廓线透明度
+//   fillOpacity: 0.4, //椭圆形填充透明度
+//   strokeStyle: "dashed", //轮廓线样式，dashed 虚线，还支持 solid，实线
+//   strokeDasharray: [20, 10], //勾勒形状轮廓的虚线和间隙的样式，20代表线段长度 10代表间隙长度
+//   fillColor: "#1791fc", //椭圆形填充颜色
+//   zIndex: 50, //椭圆形在地图上的层级
+// })
+// map.add(ellipse);
+// map.setFitView([ellipse])
+
+// //
+// var southWest = new AMap.LngLat(102.761453,25.062231); 
+// var northEast = new AMap.LngLat(102.762359,25.063547); 
+// var bounds = new AMap.Bounds(southWest, northEast); 
+
+// var rectangle = new AMap.Rectangle({
+//   bounds: bounds,
+//   strokeColor: "white", 
+//   strokeWeight: 6, 
+//   strokeOpacity: 0.5, 
+//   strokeStyle: "dashed", 
+//   strokeDasharray: [30, 10], 
+//   fillColor: "green", 
+//   fillOpacity: 0.5, 
+//   cursor: "pointer", 
+//   zIndex: 50, 
+// });
+// map.add(rectangle);
+// map.setFitView([rectangle]);
+// //多边形 Polygon对象添加到 Map
+
+
+
+
+
+var marker, lineArr = [[102.752474,25.057823],
+        [102.752698,25.057743],[102.752875,25.057516],
+        [102.754485,25.057212],[102.754514,25.056975],
+        [102.756886,25.056652],[102.758171,25.056491],
+        [102.759216,25.05671],[102.759527,25.057329],
+        [102.75947,25.058192],[102.759445,25.058885],
+        [102.759522,25.059747],[102.758247,25.059793],
+        [102.756384,25.061703],[102.756267,25.062121],
+        [102.756422,25.0626],[102.756422,25.0626],
+        [102.757344,25.062892],
+        [102.757747,25.062672],
+        [102.757741,25.062674],
+        [102.758269,25.062021],
+        [102.758755,25.061505],
+        [102.759429,25.061198],
+        [102.759429,25.061198],
+        [102.759883,25.061898],
+        [102.761441,25.062251],
+        [102.761763,25.061901],
+        [102.761853,25.060927],
+        [102.760365,25.060606],
+        [102.760464,25.060166],
+        [102.760517,25.058172],
+        [102.75741,25.058302],
+        [102.757198,25.058253]
+        ];
+var polyline = new AMap.Polyline({
+            map: map,
+            path: lineArr,
+            showDir:true,
+            strokeColor: "#28F",  //线颜色
+            // strokeOpacity: 1,     //线透明度
+            strokeWeight: 6,      //线宽
+            // strokeStyle: "solid"  //线样式
+        });
+
+        var passedPolyline = new AMap.Polyline({
+            map: map,
+            strokeColor: "#AF5",  //线颜色
+            strokeWeight: 6,      //线宽
+        });
+
+var path = [];
+    path.push([102.75249,25.05785]);
+    path.push([102.755569,25.056832]);
+    path.push([102.75878,25.059767]);
+    path.push([102.756887,25.061128]);
+    path.push([102.759257,25.056793]);
+    path.push([102.758059,25.062313]);
+    path.push([102.758213,25.059793]);
+   path.push([102.761829,25.060975]);
+    path.push([102.760539,25.058178]);
+    path.push([102.757198,25.058253]);
+    map.plugin("AMap.DragRoute", function() {
+        route = new AMap.DragRoute(map, path, AMap.DrivingPolicy.LEAST_FEE); //构造拖拽导航类
+        route.search(); //查询导航路径并开启拖拽导航
+    });
+</script>
+</body>
+</html>
